@@ -48,7 +48,24 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+Duration _bpmToDuration(int bpm) {
+  return Duration(milliseconds: (60000 / bpm).round());
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+  int _bpm = 100;
+
+  void _updateBPM(String? inputValue) {
+    setState(() {
+      if (inputValue != null && int.tryParse(inputValue) != null) {
+        int numericValue = int.parse(inputValue);
+        if (0 < numericValue && numericValue < 400) {
+          _bpm = numericValue;
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -83,19 +100,41 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SimpleCircularProgressBar(
-              // progressColors: const [
-              //   Colors.cyan,
-              //   Colors.green,
-              //   Colors.amberAccent,
-              //   Colors.redAccent,
-              //   Colors.purpleAccent
-              // ],
-              progressColors: const [Colors.cyan],
-              backColor: Colors.blueGrey,
-              backStrokeWidth: 5,
-              animationDuration: Duration(milliseconds: 600),
-            ),
+            Container(
+                margin: const EdgeInsets.all(50.0),
+                width: 500.0,
+                height: 500.0,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(50.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: 'Beats per minute',
+                          labelText: 'BPM*',
+                        ),
+                        initialValue: _bpm.toString(),
+                        onChanged: (String? value) {
+                          _updateBPM(value);
+                        },
+                      ),
+                    ),
+                    SimpleCircularProgressBar(
+                      progressColors:
+                          // progressColors: const [
+                          //   Colors.cyan,
+                          //   Colors.green,
+                          //   Colors.amberAccent,
+                          //   Colors.redAccent,
+                          //   Colors.purpleAccent
+                          // ],
+                          const [Colors.cyan],
+                      backColor: Colors.blueGrey,
+                      backStrokeWidth: 5,
+                      animationDuration: _bpmToDuration(_bpm),
+                    )
+                  ],
+                )),
           ],
         ),
       ),

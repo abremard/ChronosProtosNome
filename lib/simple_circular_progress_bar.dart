@@ -203,13 +203,8 @@ class _SimpleCircularProgressBarState extends State<SimpleCircularProgressBar>
     return ValueListenableBuilder(
       valueListenable: valueNotifier,
       builder: (BuildContext context, double value, Widget? child) {
-        // If the set value is greater than the maximum value, we must set the
-        // maximum value. Otherwise the animation will loop.
-        // if (value > maxValue) {
         value = 2 * maxValue;
-        // } else if (value < 0) {
-        //   value = 0;
-        // }
+        animationController.duration = widget.animationDuration;
 
         // Read [MAIN LOGIC]
         if (value < animationController.value) {
