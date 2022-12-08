@@ -20,6 +20,12 @@ jobs:
       with:
         name: ios-build
         path: build/ios/iphoneos
+        
+  deploy_ios:
+    name: Deploy iOS build
+    needs: [build_ios]
+    runs-on: ubuntu-latest
+    steps:
     - name: upload artifact to Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
       with:
