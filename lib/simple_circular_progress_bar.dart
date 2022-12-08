@@ -187,7 +187,7 @@ class _SimpleCircularProgressBarState extends State<SimpleCircularProgressBar>
 
     // Create animation.
     final animationDuration = (widget.animationDuration.inMicroseconds < 0)
-        ? Duration()
+        ? const Duration()
         : widget.animationDuration;
 
     animationController = AnimationController(
@@ -342,7 +342,7 @@ class _SimpleCircularProgressBarPainter extends CustomPainter {
       ..strokeWidth = backStrokeWidth;
 
     canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
-    canvas.drawCircle(size.center(Offset(0, 100)), size.width / 2, paint);
+    canvas.drawCircle(size.center(const Offset(0, 100)), size.width / 2, paint);
   }
 
   /// Draw main arc (~ 1% - 100%).
@@ -371,15 +371,6 @@ class _SimpleCircularProgressBarPainter extends CustomPainter {
           arcRect, _degToRad(90), sweepAngle - _degToRad(360), false, arcPaint);
       canvas.drawArc(arcRect2, _degToRad(270), -sweepAngle, false, arcPaint2);
     }
-  }
-
-  void _drawFullProgress(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = fullProgressColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = progressStrokeWidth;
-
-    canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
   }
 
   @override
