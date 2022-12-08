@@ -1,0 +1,29 @@
+name: Build & upload to Firebase App Distribution (iOS)
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build_ios:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        architecture: x64
+    - run: flutter pub get
+    - run: flutter build ios --release --no-codesign
+    - name: Upload iPA
+      uses: actions/upload-artifact@master
+      with:
+        name: ios-build
+        path: build/ios/iphoneos
+    - name: upload artifact to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{secrets.APPID}}
+        token: ${{secrets.TOKEN}}
+        groups: founders
+        file: build/ios/iphoneos
