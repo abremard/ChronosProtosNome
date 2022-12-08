@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "788838965440",
+    "project_id": "chronos-protos-nome",
+    "storage_bucket": "chronos-protos-nome.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788838965440:android:bf25553c8e54dce857cd25",
+        "android_client_info": {
+          "package_name": "com.example.metronome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788838965440-qthq71loh99fd6b7c01dffpbt4i0mcpv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUFNWKvpbF-HK-lGJwUrKW9SfCv_TVolY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "788838965440-qthq71loh99fd6b7c01dffpbt4i0mcpv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "788838965440-3qo2ajo6dgue9eefac8qq1d7a64e55r4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.metronome"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
