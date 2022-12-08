@@ -1,11 +1,8 @@
 name: Build & upload to Firebase App Distribution
 
 on:
-  pull_request:
-    branches: 
-      - main
-    types: 
-      - closed
+  push:
+    branches: [ "master" ]
 
 jobs:
   build:
