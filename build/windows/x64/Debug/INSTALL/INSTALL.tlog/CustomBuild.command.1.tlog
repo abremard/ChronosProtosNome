@@ -1,0 +1,10 @@
+^D:\SRC\METRONOME\METRONOME\BUILD\WINDOWS\CMAKEFILES\980076061DB1C38B92F7AA15DF49CFAE\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,28 @@
+^D:\SRC\METRONOME\METRONOME\BUILD\WINDOWS\CMAKEFILES\FAE5C256DA369DFC3C96BE6016CD92E7\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=D:\src\flutter PROJECT_DIR=D:\src\metronome\metronome FLUTTER_ROOT=D:\src\flutter FLUTTER_EPHEMERAL_DIR=D:\src\metronome\metronome\windows\flutter\ephemeral PROJECT_DIR=D:\src\metronome\metronome FLUTTER_TARGET=D:\src\metronome\metronome\lib\main.dart DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ== DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=D:\src\metronome\metronome\.dart_tool\package_config.json D:/src/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\SRC\METRONOME\METRONOME\BUILD\WINDOWS\CMAKEFILES\31936F3BAA7C40CA5A845CAFECDF26EA\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\SRC\METRONOME\METRONOME\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SD:/src/metronome/metronome/windows -BD:/src/metronome/metronome/build/windows --check-stamp-file D:/src/metronome/metronome/build/windows/flutter/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
