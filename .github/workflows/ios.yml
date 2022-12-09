@@ -1,4 +1,4 @@
-name: Build & upload to Firebase App Distribution (iOS)
+name: Build & upload iOS
 
 on:
   push:
