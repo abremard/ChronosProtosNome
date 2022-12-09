@@ -1,4 +1,4 @@
-name: Build & upload to Firebase App Distribution (iOS)
+name: Build & upload iOS
 
 on:
   push:
@@ -14,16 +14,35 @@ jobs:
         channel: 'stable'
         architecture: x64
     - run: flutter pub get
-    - run: flutter build ios --release --no-codesign
-    - name: Upload iPA
-      uses: actions/upload-artifact@master
+    # Build and sign the ipa using a single flutter command
+    - name: Building IPA
+      run: flutter build ipa --release --no-codesign
+
+    # Collect the file and upload as artifact         
+    - name: collect ipa artifacts
+      uses: actions/upload-artifact@v2
       with:
-        name: ios-build
-        path: build/ios/iphoneos
-    - name: upload artifact to Firebase App Distribution
+       name: release-ipa
+       # Path to the release files
+       path: build/ios/ipa/*.ipa
+        
+  deploy_ios:
+    name: Deploy iOS build
+    needs: [build_ios]
+    runs-on: ubuntu-latest
+    steps:
+    # Retrieve ipa file from GitHub artifacts
+    - uses: actions/checkout@v2
+    - name: Get release-ipa from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: release-ipa
+
+    # Upload ipa file to Fiebase
+    - name: Upload artifact to Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
       with:
         appId: ${{secrets.APPID}}
         token: ${{secrets.TOKEN}}
         groups: founders
-        file: build/ios/iphoneos
+        file: metronome.ipa
