@@ -17,9 +17,5 @@ jobs:
         channel: 'stable'
     - name: Updating dependencies
       run: flutter pub get
-    - name: Running tests
-      run: flutter test
     - name: Building Android app
       run: flutter build apk
-    - name: Building iOS app
-      run: flutter build ipa --release --no-codesign
