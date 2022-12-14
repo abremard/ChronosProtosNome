@@ -1,14 +1,14 @@
 # This workflow uses actions to test and build the project
 # It should run every time there's a pull request
 
-name: Test and Build
+name: Android Build
 
 on:
   pull_request:
     branches: [ "master" ]
 
 jobs:
-  test_and_build:
+  android_build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
