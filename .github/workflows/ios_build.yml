@@ -1,0 +1,22 @@
+# This workflow uses actions to test and build the project
+# It should run every time there's a pull request
+
+name: iOS Build
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  ios_build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        architecture: x64
+    - name: Updating dependencies
+      run: flutter pub get
+    - name: Building iOS app
+      run: flutter build ipa --release --no-codesign

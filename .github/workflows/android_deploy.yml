@@ -1,14 +1,15 @@
-name: Build & upload to Firebase App Distribution
+# This workflow uses actions to build and deploy the project
+# It should run every time a PR is merged on master
+
+name: Build & upload apk to Firebase App Distribution
 
 on:
   push:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  deploy_android_app:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v2
@@ -27,13 +28,15 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-      - run: flutter pub get
-      - run: flutter build apk
+      - name: Updating dependencies
+        run: flutter pub get
+      - name: Building Android app
+        run: flutter build apk
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
-      - name: upload artifact to Firebase App Distribution
+      - name: Uploading artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
             appId: ${{secrets.APPID}}
