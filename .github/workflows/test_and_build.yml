@@ -1,0 +1,25 @@
+# This workflow uses actions to test and build the project
+# It should run every time there's a pull request
+
+name: Test and Build
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test_and_build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+    - name: Updating dependencies
+      run: flutter pub get
+    - name: Running tests
+      run: flutter test
+    - name: Building Android app
+      run: flutter build apk
+    - name: Building iOS app
+      run: flutter build ipa --release --no-codesign

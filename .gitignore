@@ -43,3 +43,4 @@ app.*.map.json
 /linux
 /macos
 /windows
+/build/
