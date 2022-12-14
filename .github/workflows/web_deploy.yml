@@ -11,7 +11,12 @@ jobs:
   deploy_live_website:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Updating dependencies
+        run: flutter pub get
       - name: Building web app
         run: flutter build web
       - name: Uploading artifact to Firebase Hosting
