@@ -115,7 +115,7 @@ class SimpleCircularProgressBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SimpleCircularProgressBarState createState() =>
+  State<SimpleCircularProgressBar> createState() =>
       _SimpleCircularProgressBarState();
 }
 
