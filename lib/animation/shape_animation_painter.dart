@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 
 class ShapeAnimationPainter extends CustomPainter {
-  final double progressStrokeWidth;
   final double backStrokeWidth;
   final double currentLength;
+  final double progressStrokeWidth;
+  final double snakeLength;
+  final double totalLength;
   final Color backColor;
   final Path animationPath;
+  final SweepGradient frontGradient;
 
   ShapeAnimationPainter({
-    required this.progressStrokeWidth,
+    required this.animationPath,
+    required this.backColor,
     required this.backStrokeWidth,
     required this.currentLength,
-    required this.backColor,
-    required this.animationPath,
+    required this.frontGradient,
+    required this.progressStrokeWidth,
+    required this.totalLength,
+    this.snakeLength = 150,
   });
+
+  int loopNumber = 0;
 
   Path extractPathUntilLength(
     Path originalPath,
@@ -30,21 +38,21 @@ class ShapeAnimationPainter extends CustomPainter {
 
       var nextLength = currentLength + metric.length;
 
-      final isLastSegment = nextLength > length;
-      if (isLastSegment) {
-        final remainingLength = length - currentLength;
-        final pathSegment = metric.extractPath(0.0, remainingLength);
+      final remainingLength = length - currentLength;
+      final pathSegment =
+          metric.extractPath(remainingLength - snakeLength, remainingLength);
 
-        path.addPath(pathSegment, Offset.zero);
-        break;
-      } else {
-        final pathSegment = metric.extractPath(0.0, metric.length);
-        path.addPath(pathSegment, Offset.zero);
+      path.addPath(pathSegment, Offset.zero);
+
+      if (length < snakeLength) {
+        path.addPath(
+            metric.extractPath(
+                totalLength - snakeLength + remainingLength, totalLength),
+            Offset.zero);
       }
 
       currentLength = nextLength;
     }
-
     return path;
   }
 
@@ -59,6 +67,8 @@ class ShapeAnimationPainter extends CustomPainter {
 
   void drawPathPortion(Canvas canvas, Size size) {
     final Paint paint = Paint()
+      ..shader =
+          frontGradient.createShader(Offset.zero & const Size(100.0, 100.0))
       ..strokeWidth = progressStrokeWidth
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
