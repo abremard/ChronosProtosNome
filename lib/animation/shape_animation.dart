@@ -9,7 +9,7 @@ class ShapeAnimation extends StatefulWidget {
 
   const ShapeAnimation({
     Key? key,
-    this.animationDuration = const Duration(seconds: 6),
+    required this.animationDuration,
     required this.animationPath,
   }) : super(key: key);
 
@@ -20,6 +20,7 @@ class ShapeAnimation extends StatefulWidget {
 class _ShapeAnimationState extends State<ShapeAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
+  late SweepGradient sweepGradient;
 
   @override
   void initState() {
@@ -28,7 +29,17 @@ class _ShapeAnimationState extends State<ShapeAnimation>
     animationController = AnimationController(
       vsync: this,
       duration: widget.animationDuration,
+      value: 0.0,
       upperBound: 100.0,
+    );
+
+    final List<Color> progressColors = [];
+    progressColors.add(Colors.lightBlue);
+    progressColors.add(Colors.lightBlue);
+
+    sweepGradient = SweepGradient(
+      tileMode: TileMode.decal,
+      colors: progressColors,
     );
   }
 
@@ -37,7 +48,8 @@ class _ShapeAnimationState extends State<ShapeAnimation>
     return ValueListenableBuilder(
       valueListenable: ValueNotifier(100.0),
       builder: (BuildContext context, double value, Widget? child) {
-        animationController.duration = const Duration(seconds: 6);
+        animationController.duration = widget.animationDuration;
+        animationController.animateTo(value);
 
         return AnimatedBuilder(
           animation: animationController,
@@ -47,7 +59,12 @@ class _ShapeAnimationState extends State<ShapeAnimation>
             final totalLength = widget.animationPath.computeMetrics().fold(
                 0.0, (double prev, PathMetric metric) => prev + metric.length);
 
-            final currentLength = totalLength * animationController.value;
+            final currentLength = totalLength * animationController.value / 100;
+
+            if ((animationController.value >= animationController.upperBound)) {
+              animationController.reset();
+              animationController.animateTo(value);
+            }
 
             return Stack(
               alignment: Alignment.center,
@@ -56,11 +73,14 @@ class _ShapeAnimationState extends State<ShapeAnimation>
                 CustomPaint(
                     size: const Size(100, 100),
                     painter: ShapeAnimationPainter(
-                        progressStrokeWidth: 15,
-                        backStrokeWidth: 15,
-                        currentLength: currentLength,
-                        backColor: const Color(0xFF16262D),
-                        animationPath: widget.animationPath)),
+                      animationPath: widget.animationPath,
+                      backColor: const Color(0xFF16262D),
+                      backStrokeWidth: 1,
+                      currentLength: currentLength,
+                      frontGradient: sweepGradient,
+                      progressStrokeWidth: 15,
+                      totalLength: totalLength,
+                    )),
               ],
             );
           },
