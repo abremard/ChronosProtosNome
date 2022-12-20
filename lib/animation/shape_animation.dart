@@ -6,11 +6,13 @@ import 'package:metronome/animation/shape_animation_painter.dart';
 class ShapeAnimation extends StatefulWidget {
   final Duration animationDuration;
   final Path animationPath;
+  final double snakeLength;
 
   const ShapeAnimation({
     Key? key,
     required this.animationDuration,
     required this.animationPath,
+    required this.snakeLength,
   }) : super(key: key);
 
   @override
@@ -79,6 +81,7 @@ class _ShapeAnimationState extends State<ShapeAnimation>
                       currentLength: currentLength,
                       frontGradient: sweepGradient,
                       progressStrokeWidth: 15,
+                      snakeLength: widget.snakeLength,
                       totalLength: totalLength,
                     )),
               ],
