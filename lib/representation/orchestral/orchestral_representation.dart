@@ -87,6 +87,10 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
     temper = Temper.neutral;
   }
 
+  Rect drawRectangle(width, height, {offset = Offset.zero}) {
+    return Offset.zero & Size(width, height);
+  }
+
   @override
   Widget build(BuildContext context) {
     Path drawPath() {
@@ -98,11 +102,8 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
             case 1:
               switch (shape) {
                 case Shape.orchestral:
-                  const double height = 130.0;
-                  const double width = 50.0;
-                  const Size rectangleSize = Size(width, height);
-                  final Rect rectangle = Offset.zero & rectangleSize;
-                  animationPath.addArc(rectangle, _degToRad(0), _degToRad(360));
+                  animationPath.addArc(
+                      drawRectangle(50.0, 130.0), _degToRad(0), _degToRad(360));
                   break;
               }
               break;
@@ -118,6 +119,8 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
         case Temper.portato:
           switch (beat) {
             case 1:
+              animationPath.addArc(
+                  drawRectangle(40.0, 170.0), _degToRad(0), _degToRad(360));
               break;
             case 2:
               break;
