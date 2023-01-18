@@ -187,7 +187,6 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.all(50.0),
                   child: TextFormField(
                     decoration: const InputDecoration(
                       hintText: 'Beats per minute',
@@ -293,7 +292,7 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
               child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 20.0, top: 150.0),
+                margin: const EdgeInsets.only(top: 150.0),
                 child: ShapeAnimation(
                   animationPath: animationPath,
                   animationDuration: _bpmToDuration(bpm, beat),
