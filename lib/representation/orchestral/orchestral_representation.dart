@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:metronome/animation/shape_animation.dart';
 
-enum Temper { staccato, legato }
+enum Temper { neutral, portato, legato, staccato }
 
-enum Shape { circle, lobe }
+enum Shape { orchestral }
 
 class OrchestralRepresentation extends StatefulWidget {
   const OrchestralRepresentation({super.key, this.temper = Temper.legato});
@@ -32,6 +32,7 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
   late int bpm;
   late int beat;
   late Shape shape;
+  late Temper temper;
 
   double getPathLength(Path path) {
     List<PathMetric> pathMetric = path.computeMetrics().toList();
@@ -69,12 +70,21 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
     });
   }
 
+  void updateTemper(Temper? selectedTemper) {
+    setState(() {
+      if (selectedTemper != null) {
+        temper = selectedTemper;
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     bpm = 100;
-    beat = 2;
-    shape = Shape.circle;
+    beat = 1;
+    shape = Shape.orchestral;
+    temper = Temper.neutral;
   }
 
   @override
@@ -82,24 +92,49 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
     Path drawPath() {
       Path animationPath = Path();
 
-      switch (widget.temper) {
+      switch (temper) {
+        case Temper.neutral:
+          switch (beat) {
+            case 1:
+              switch (shape) {
+                case Shape.orchestral:
+                  const double height = 130.0;
+                  const double width = 50.0;
+                  const Size rectangleSize = Size(width, height);
+                  final Rect rectangle = Offset.zero & rectangleSize;
+                  animationPath.addArc(rectangle, _degToRad(0), _degToRad(360));
+                  break;
+              }
+              break;
+            case 2:
+              break;
+            case 3:
+              break;
+            case 4:
+              break;
+          }
+          break;
+
+        case Temper.portato:
+          switch (beat) {
+            case 1:
+              break;
+            case 2:
+              break;
+            case 3:
+              break;
+            case 4:
+              break;
+          }
+          break;
+
         case Temper.legato:
           switch (beat) {
+            case 1:
+              break;
             case 2:
               switch (shape) {
-                case Shape.circle:
-                  const double height = 150.0;
-                  const double width = 150.0;
-                  const Size rectangleSize = Size(width, height);
-                  final Rect rectangle1 = Offset.zero & rectangleSize;
-                  final Rect rectangle2 =
-                      const Offset(width, 0) & rectangleSize;
-                  animationPath.addArc(
-                      rectangle1, _degToRad(0), _degToRad(360));
-                  animationPath.addArc(
-                      rectangle2, _degToRad(180), -_degToRad(360));
-                  break;
-                case Shape.lobe:
+                case Shape.orchestral:
                   animationPath.moveTo(150, 70);
                   animationPath.quadraticBezierTo(-10, 180, -20, 70);
                   animationPath.quadraticBezierTo(-10, -30, 150, 70);
@@ -110,21 +145,7 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
               break;
             case 3:
               switch (shape) {
-                case Shape.circle:
-                  final Rect rectangle1 =
-                      const Offset(40, 66) & const Size(150.0, 150.0);
-                  final Rect rectangle2 =
-                      const Offset(151.0, 0) & const Size(150.0, 150.0);
-                  final Rect rectangle3 =
-                      const Offset(40, -66) & const Size(150.0, 150.0);
-                  animationPath.addArc(
-                      rectangle1, _degToRad(-60), _degToRad(360));
-                  animationPath.addArc(
-                      rectangle2, _degToRad(180), -_degToRad(360));
-                  animationPath.addArc(
-                      rectangle3, _degToRad(60), _degToRad(360));
-                  break;
-                case Shape.lobe:
+                case Shape.orchestral:
                   animationPath.moveTo(150, 70);
                   animationPath.quadraticBezierTo(80, 228, 5, 140);
                   animationPath.quadraticBezierTo(-60, 40, 150, 70);
@@ -142,6 +163,8 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
 
         case Temper.staccato:
           switch (beat) {
+            case 1:
+              break;
             case 2:
               break;
             case 3:
@@ -180,6 +203,16 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
                   children: [
                     const Text('Beat'),
                     ListTile(
+                      title: const Text('1'),
+                      leading: Radio<int>(
+                        value: 1,
+                        groupValue: beat,
+                        onChanged: (int? value) {
+                          updateBeat(value);
+                        },
+                      ),
+                    ),
+                    ListTile(
                       title: const Text('2'),
                       leading: Radio<int>(
                         value: 2,
@@ -201,22 +234,53 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
                     ),
                     const Text('Shape'),
                     ListTile(
-                      title: const Text('Circle'),
+                      title: const Text('Orchestral'),
                       leading: Radio<Shape>(
-                        value: Shape.circle,
+                        value: Shape.orchestral,
                         groupValue: shape,
                         onChanged: (Shape? value) {
                           updateShape(value);
                         },
                       ),
                     ),
+                    const Text('Mode'),
                     ListTile(
-                      title: const Text('Lobe'),
-                      leading: Radio<Shape>(
-                        value: Shape.lobe,
-                        groupValue: shape,
-                        onChanged: (Shape? value) {
-                          updateShape(value);
+                      title: const Text('Neutral'),
+                      leading: Radio<Temper>(
+                        value: Temper.neutral,
+                        groupValue: temper,
+                        onChanged: (Temper? value) {
+                          updateTemper(value);
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Portato'),
+                      leading: Radio<Temper>(
+                        value: Temper.portato,
+                        groupValue: temper,
+                        onChanged: (Temper? value) {
+                          updateTemper(value);
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Legato'),
+                      leading: Radio<Temper>(
+                        value: Temper.legato,
+                        groupValue: temper,
+                        onChanged: (Temper? value) {
+                          updateTemper(value);
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Staccato'),
+                      leading: Radio<Temper>(
+                        value: Temper.staccato,
+                        groupValue: temper,
+                        onChanged: (Temper? value) {
+                          updateTemper(value);
                         },
                       ),
                     ),
