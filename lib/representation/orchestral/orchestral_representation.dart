@@ -134,6 +134,12 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
         case Temper.legato:
           switch (beat) {
             case 1:
+              switch (shape) {
+                case Shape.orchestral:
+                  animationPath.addArc(drawRectangle(120.0, 150.0),
+                      _degToRad(0), _degToRad(360));
+                  break;
+              }
               break;
             case 2:
               switch (shape) {
