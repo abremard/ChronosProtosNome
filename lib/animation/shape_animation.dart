@@ -45,6 +45,30 @@ class _ShapeAnimationState extends State<ShapeAnimation>
     );
   }
 
+  double mapSpeed(double value, List<double> cutoff) {
+    switch (cutoff.length) {
+      case 1:
+        if (value <= 50) {
+          return cutoff.elementAt(0) * value * 2;
+        } else {
+          return ((1 - cutoff.elementAt(0)) * value * 2) +
+              (cutoff.elementAt(0) - 0.5) * 50;
+        }
+      case 2:
+        if (value <= 100 / 3) {
+          return cutoff.elementAt(0) * value * 3;
+        } else if (100 / 3 < value && value <= 200 / 3) {
+          return ((cutoff.elementAt(1) - cutoff.elementAt(0)) * value * 3) +
+              (100 / 3) * (cutoff.elementAt(0) - (1 / 3));
+        } else {
+          return ((1 - cutoff.elementAt(1)) * value * 3) +
+              (100 / 3) * (cutoff.elementAt(1) - 2);
+        }
+      default:
+        return value;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
