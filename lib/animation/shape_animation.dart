@@ -6,12 +6,14 @@ import 'package:metronome/animation/shape_animation_painter.dart';
 class ShapeAnimation extends StatefulWidget {
   final Duration animationDuration;
   final Path animationPath;
+  final List<double> cutoff;
   final double snakeLength;
 
   const ShapeAnimation({
     Key? key,
     required this.animationDuration,
     required this.animationPath,
+    required this.cutoff,
     required this.snakeLength,
   }) : super(key: key);
 
@@ -45,24 +47,26 @@ class _ShapeAnimationState extends State<ShapeAnimation>
     );
   }
 
-  double mapSpeed(double value, List<double> cutoff) {
-    switch (cutoff.length) {
+  double mapSpeed(double value) {
+    switch (widget.cutoff.length) {
       case 1:
         if (value <= 50) {
-          return cutoff.elementAt(0) * value * 2;
+          return widget.cutoff.elementAt(0) * value * 2;
         } else {
-          return ((1 - cutoff.elementAt(0)) * value * 2) +
-              (cutoff.elementAt(0) - 0.5) * 50;
+          return 100 * widget.cutoff.elementAt(0) +
+              (value - 50) * 2 * (1 - widget.cutoff.elementAt(0));
         }
       case 2:
         if (value <= 100 / 3) {
-          return cutoff.elementAt(0) * value * 3;
+          return widget.cutoff.elementAt(0) * value * 3;
         } else if (100 / 3 < value && value <= 200 / 3) {
-          return ((cutoff.elementAt(1) - cutoff.elementAt(0)) * value * 3) +
-              (100 / 3) * (cutoff.elementAt(0) - (1 / 3));
+          return ((widget.cutoff.elementAt(1) - widget.cutoff.elementAt(0)) *
+                  value *
+                  3) +
+              (100 / 3) * (widget.cutoff.elementAt(0) - (1 / 3));
         } else {
-          return ((1 - cutoff.elementAt(1)) * value * 3) +
-              (100 / 3) * (cutoff.elementAt(1) - 2);
+          return ((1 - widget.cutoff.elementAt(1)) * value * 3) +
+              (100 / 3) * (widget.cutoff.elementAt(1) - 2);
         }
       default:
         return value;
@@ -85,7 +89,8 @@ class _ShapeAnimationState extends State<ShapeAnimation>
             final totalLength = widget.animationPath.computeMetrics().fold(
                 0.0, (double prev, PathMetric metric) => prev + metric.length);
 
-            final currentLength = totalLength * animationController.value / 100;
+            final currentLength =
+                totalLength * mapSpeed(animationController.value) / 100;
 
             if ((animationController.value >= animationController.upperBound)) {
               animationController.reset();
