@@ -33,6 +33,7 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
   late int beat;
   late Shape shape;
   late Temper temper;
+  late List<double> cutoff;
 
   double getPathLength(Path path) {
     List<PathMetric> pathMetric = path.computeMetrics().toList();
@@ -62,6 +63,14 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
     });
   }
 
+  void updateCutoff(List<double>? newCutoff) {
+    setState(() {
+      if (newCutoff != null) {
+        cutoff = newCutoff;
+      }
+    });
+  }
+
   void updateShape(Shape? selectedShape) {
     setState(() {
       if (selectedShape != null) {
@@ -82,9 +91,10 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
   void initState() {
     super.initState();
     bpm = 100;
-    beat = 1;
+    beat = 2;
     shape = Shape.orchestral;
     temper = Temper.neutral;
+    cutoff = [0.5];
   }
 
   Rect drawRectangle(width, height, {offset = Offset.zero}) {
@@ -108,6 +118,15 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
               }
               break;
             case 2:
+              switch (shape) {
+                case Shape.orchestral:
+                  animationPath.quadraticBezierTo(0, 180, 70, 160);
+                  animationPath.quadraticBezierTo(100, 150, 100, 120);
+                  double pathLength1 = getPathLength(animationPath);
+                  animationPath.quadraticBezierTo(30, 180, 0, 0);
+                  updateCutoff([pathLength1 / getPathLength(animationPath)]);
+                  break;
+              }
               break;
             case 3:
               break;
@@ -305,6 +324,7 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
                 child: ShapeAnimation(
                   animationPath: animationPath,
                   animationDuration: _bpmToDuration(bpm, beat),
+                  cutoff: cutoff,
                   snakeLength: clampDouble(bpm.toDouble(), 200, 400),
                 ),
               )
