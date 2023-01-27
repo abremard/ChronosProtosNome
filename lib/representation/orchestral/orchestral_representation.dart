@@ -93,7 +93,7 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
     bpm = 100;
     beat = 2;
     shape = Shape.orchestral;
-    temper = Temper.portato;
+    temper = Temper.legato;
     cutoff = [0.5];
   }
 
@@ -174,11 +174,13 @@ class _OrchestralRepresentationState extends State<OrchestralRepresentation> {
             case 2:
               switch (shape) {
                 case Shape.orchestral:
-                  animationPath.moveTo(150, 70);
-                  animationPath.quadraticBezierTo(-10, 180, -20, 70);
-                  animationPath.quadraticBezierTo(-10, -30, 150, 70);
-                  animationPath.quadraticBezierTo(310, 180, 320, 70);
-                  animationPath.quadraticBezierTo(310, -30, 150, 70);
+                  animationPath.quadraticBezierTo(0, 90, 90, 70);
+                  animationPath.quadraticBezierTo(120, 60, 120, 30);
+                  double pathLength1 = getPathLength(animationPath);
+                  animationPath.quadraticBezierTo(110, 20, 80, 40);
+                  animationPath.quadraticBezierTo(70, 45, 60, 45);
+                  animationPath.quadraticBezierTo(40, 45, 0, 0);
+                  updateCutoff([pathLength1 / getPathLength(animationPath)]);
                   break;
               }
               break;
